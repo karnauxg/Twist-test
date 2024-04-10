@@ -1,7 +1,7 @@
 variable "create" {
   description = "Determines whether resources will be created (affects all resources)"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "region" {
@@ -16,17 +16,23 @@ variable "ecr_name" {
 
 variable "s3_name" {
   type        = string
-  default     = "twist_s3"
+  default     = "twists3"
 }
 
 variable "key_name" {
   type        = string
-  default     = null
+  # default     = null
+  default     = "mev-cl"
 }
 
 variable "public_key" {
   type        = string
   default     = ""
+}
+
+variable "ec2_ami" {
+  type        = string
+  default     = "ami-080e1f13689e07408"
 }
 
 variable "ec2_name" {
@@ -41,10 +47,10 @@ variable "ec2_type" {
 
 variable "vpc_security_group_ids" {
   type        = list(string)
-  default     = [ "value" ]
+  default     = [ "sg-23dfc946" ]
 }
 
 variable "subnet_id" {
   type        = string
-  default     = "value"
+  default     = "subnet-89a737b3"
 }

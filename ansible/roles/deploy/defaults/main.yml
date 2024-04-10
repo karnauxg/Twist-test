@@ -1,0 +1,11 @@
+---
+component_name: 'unifi'
+component_dir: "/home/{{ ansible_user }}/{{ component_name }}"
+aws_account_id: 1111111
+aws_region: 'us-east-1'
+ecr_repository_name: 'twist_ecr'
+deploy_tag: latest
+aws_access_key_id: '111111111111'
+aws_secret_access_key: '1111111111'
+
+

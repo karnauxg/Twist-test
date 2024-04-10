@@ -1,0 +1,7 @@
+---
+
+- name: Install latest awscli
+  pip:
+    name: awscli
+    state: present
+
