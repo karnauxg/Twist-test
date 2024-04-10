@@ -1,0 +1,73 @@
+---
+- name: 'Create project directory'
+  file:
+    path: "{{ component_dir }}"
+    state: 'directory'
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: 0750
+
+- name: 'Generate docker-compose.yml from template'
+  template:
+    src: 'templates/docker-compose.yml.j2'
+    dest: "{{ component_dir }}/docker-compose.yaml"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: 0640
+    backup: 'yes'
+
+- name: 'Create .aws directory'
+  file:
+    path: "/home/{{ ansible_user }}/.aws"
+    state: 'directory'
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: 0755
+
+- name: 'Generate aws config'
+  template:
+    src: 'templates/config.j2'
+    dest: "/home/{{ ansible_user }}/.aws/config"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: 0600
+
+- name: 'Generate aws credentials'
+  template:
+    src: 'templates/credentials.j2'
+    dest: "/home/{{ ansible_user }}/.aws/credentials"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: 0600
+
+- name: 'Login to docker registry'
+  shell: '$(aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin {{ aws_account_id }}.dkr.ecr.us-east-1.amazonaws.com)'
+
+- name: 'Pull image'
+  shell: 'docker-compose pull'
+  args:
+    chdir: "{{ component_dir }}"
+
+- name: 'Run application'
+  shell: 'docker-compose up -d --remove-orphans --force-recreate'
+  args:
+    chdir: "{{ component_dir }}"
+
+- name: Create backup directory if it doesn't exist
+  file:
+    path: /unifi/data/backup
+    state: directory
+
+- name: Backup unifi data directory
+  shell: tar czf /unifi/data/backup/unifi_data_backup_{{ ansible_date_time.iso8601_basic }}.tar.gz /unifi/data
+  args:
+    creates: /unifi/data/backup/unifi_data_backup_{{ ansible_date_time.iso8601_basic }}.tar.g
+
+- name: Upload backup to S3
+  aws_s3:
+    bucket: twists3
+    object: unifi_data_backup_{{ ansible_date_time.iso8601_basic }}.tar.gz
+    src: /unifi/data/backup/unifi_data_backup_{{ ansible_date_time.iso8601_basic }}.tar.gz
+    mode: put
+    aws_access_key: {{ aws_access_key_id }}
+    aws_secret_key: {{ aws_secret_access_key }}
