@@ -36,21 +36,28 @@
 ## Run UniFi with Ansible
 
 1. Go to directory: cd ./ansible 
-2. Change the values in ./ansible.cfg:
+
+Change the values in ./ansible.cfg:
+
 | Name | Description |
 |------|---------|
-| <a name="private_key_file"></a> | Path to your private ssh key|
+| <a name="private_key_file"></a> [private_key_file\_name](#input\private_key_file\_name) | Path to your private ssh key |
 
-3. Change the values in ./inventories/unifi.yaml:
+
+Change the values in ./inventories/unifi.yaml:
+
 | Name | Description |
 |------|---------|
-| <a name="ansible_host"></a> | It is Public IP your EC2 |
+| <a name="ansible_host"></a> [ansible_host\_name](#input\ansible_host\_name) | It is Public IP your EC2 |
 
-4. Change the values in ./roles/deploy/defaults/main.yaml:
+
+Change the values in ./roles/deploy/defaults/main.yaml:
+
 | Name | Description |
 |------|---------|
-| <a name="aws_account_id"></a> | Your AWS account ID |
-| <a name="aws_access_key_id"></a> | Your aws_access_key_id|
-| <a name="aws_secret_access_key"></a> | Your aws_secret_access_key |
+| <a name="aws_account_id"></a> [aws_account_id\_name](#input\aws_account_id\_name) | Your AWS account ID |
+| <a name="aws_access_key_id"></a> [aws_access_key_id\_name](#input\aws_access_key_id\_name) | Your aws_access_key_id|
+| <a name="aws_secret_access_key"></a> [aws_secret_access_key\_name](#input\aws_secret_access_key\_name) | Your aws_secret_access_key |
 
-5. After each deploy will be created tar.gz and put into S3
+
+2. After each deploy will be created tar.gz and put into S3
