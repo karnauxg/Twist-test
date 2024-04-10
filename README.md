@@ -13,24 +13,28 @@
 
 1. git clone https://github.com/karnauxg/Twist-test.git
 2. Edit variables.tf
-    `create` - Set true, if you need add your pair key. Default is false.
-    `key_name`- It is name you pair_key
-    `vpc_security_group_ids` - It is a security group in your AWS. Already exist.
-    `subnet_id` - It is a subnet in your AWS. Already exist.
+
+| Name | Description |
+|------|---------|
+| <a name="create"></a> [create\_name](#input\create\_name) | Set true, if you need add your pair key. Default is false. |
+| <a name="key_name"></a> [key_name\_name](#input\key_name\_name) | It is name you pair_key |
+| <a name="vpc_security_group_ids"></a> [vpc_security_group_ids\_name](#input\vpc_security_group_ids\_name) | It is a security group in your AWS. Already exist. |
+| <a name="subnet_id"></a> [subnet_id\_name](#input\subnet_id\_name) | It is a subnet in your AWS. Already exist. |
+
 
 3. Go to directory: cd ./terraform 
-    `terraform init`
-    `terraform plan`
-    `terraform apply -auto-approve`
+    - `terraform init`
+    - `terraform plan`
+    - `terraform apply -auto-approve`
 
 
 ## Build Image and Push to ECR
 
 1. Go to directory: cd ./unifi-docker.
 2. Run the next commands. Don't forget the change in the next commands `<ID your account>`
-    `docker build -t unifi-twist:latest .`
-    `aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <ID your account>.dkr.ecr.us-east-1.amazonaws.com`
-    `docker tag unifi-twist:latest <ID your account>.dkr.ecr.us-east-1.amazonaws.com/twist_ecr:latest`
+    - `docker build -t unifi-twist:latest .`
+    - `aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <ID your account>.dkr.ecr.us-east-1.amazonaws.com`
+    - `docker tag unifi-twist:latest <ID your account>.dkr.ecr.us-east-1.amazonaws.com/twist_ecr:latest`
 
 
 ## Run UniFi with Ansible
